@@ -6,18 +6,21 @@
     <icon />
 
     <properties>
-        <property key="backgroundColor" type="attribute">
-            <caption>Background Color</caption>
+        <property key="ColorPrimaryAttr" type="attribute" required="false">
+            <caption>Primary Color</caption>
             <category>Appearance</category>
-            <description>The background color of the widget.</description>
+            <description>The primary color of the widget.</description>
             <attributeTypes>
                 <attributeType name="String" />
             </attributeTypes>
         </property>
-        <property key="messageString" type="string" required="true" defaultValue="">
-            <caption>Message</caption>
+        <property key="valueAttr" type="attribute" required="true" defaultValue="">
+            <caption>Value</caption>
             <category>Appearance</category>
-            <description>The message visible within the widget.</description>
+            <description>Current value for the gauge.</description>
+            <attributeTypes>
+                <attributeType name="Integer" />
+            </attributeTypes>
         </property>
         <property key="mfToExecute" type="microflow" required="false" defaultValue="">
             <caption>Microflow</caption>
@@ -27,4 +30,3 @@
         </property>
     </properties>
 </widget>
-

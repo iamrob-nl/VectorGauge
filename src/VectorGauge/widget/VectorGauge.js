@@ -53,11 +53,6 @@ define([
         gaugeNeedle: null,
         _i: 0,
 
-        // Parameters configured in the Modeler.
-        mfToExecute: "",
-        messageString: "",
-        backgroundColor: "",
-
         // Internal variables. Non-primitives created in the prototype are shared between all widget instances.
         _handles: null,
         _contextObj: null,
@@ -87,8 +82,8 @@ define([
             this._updateRendering();
 
             if (typeof callback !== "undefined") {
-                callback();
-			}
+              callback();
+            }
         },
 
         // mxui.widget._WidgetBase.enable is called when the widget should enable editing. Implement to enable editing if widget is input widget.
@@ -124,6 +119,10 @@ define([
         _drawSVG: function() {
           logger.debug(this.id + "._drawSVG");
 
+          var color = this._contextObj ? this._contextObj.get(this.ColorPrimaryAttr) : "";
+          var value = this._contextObj ? this._contextObj.get(this.valueAttr) : "";
+          console.log("value = " + value);
+
           var newId = "#" + this.id;
 
           var gaugeArc = newId + " #" + this.gaugeArc.id;
@@ -137,23 +136,21 @@ define([
           var needle = Snap.select("#" + this.gaugeNeedle.id);
 
           needle.select("polygon:nth-child(1)").attr({
-            fill: "#bada55",
-            stroke: "#000000"
+            fill: color
           });
           needle.select("polygon:nth-child(2)").attr({
-            fill: "rgba(0,0,0,.5)"
+            //fill: this.ColorPrimary
             //opacity: 0.4
           });
           needle.select("circle").attr({
-            fill: "#bada55",
-            stroke: "#000000"
+            fill: color
           });
 
           var arcLength = arc.getTotalLength();
           var arcString = arc.attr("d");
 
-          var archValue = (arcLength / 100) * 75;
-          var rotationValue = (270 / 100) * 75;
+          var archValue = (arcLength / 100) * value;
+          var rotationValue = (270 / 100) * value;
           arc.attr({ d: ""});
 
           needle.animate({
@@ -181,7 +178,7 @@ define([
               this._drawSVG();
             } else {
                 // Hide widget dom node.
-                domStyle.set(this.domNode, "display", "none");
+                dojoStyle.set(this.domNode, "display", "none");
             }
 
             // Important to clear all validations!
