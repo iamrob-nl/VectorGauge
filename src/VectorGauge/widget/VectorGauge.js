@@ -190,12 +190,6 @@ define([
             });
           }, 1000);
 
-          var f = s.filter(Snap.filter.blur(5, 10)),
-          //var f = svg.paper.filter(Snap.filter.hueRotate(45));
-          c = arc.attr({
-            filter: f
-          });
-
           // Increase this value to make every SVG use unique ID's
           this.counter.innerHTML = ++this._i;
         },
