@@ -116,52 +116,87 @@ define([
             //logger.debug(this.id + "._setupEvents");
         },
 
+        _customColor: function(arcBG, arc, needle) {
+          logger.debug(this.id + "._customColor");
+
+          var color = this._contextObj ? this._contextObj.get(this.ColorPrimaryAttr) : "";
+
+          arcBG.attr({
+            stroke: color,
+            opacity: 0.25
+          });
+
+          arc.attr({
+            stroke: color
+          });
+
+          needle.select("polygon:nth-child(1)").attr({
+            fill: color,
+            stroke: "rgba(0, 0, 0, .5)"
+          });
+          needle.select("polygon:nth-child(2)").attr({
+            fill: "#000000",
+            opacity: 0.15
+          });
+          needle.select("circle").attr({
+            fill: color,
+            stroke: "rgba(0, 0, 0, .5)"
+          });
+        },
+
         _drawSVG: function() {
           logger.debug(this.id + "._drawSVG");
 
-          var color = this._contextObj ? this._contextObj.get(this.ColorPrimaryAttr) : "";
+          // Widget configured variables
           var value = this._contextObj ? this._contextObj.get(this.valueAttr) : "";
-          console.log("value = " + value);
 
+          // Variable SVG elements
           var newId = "#" + this.id;
-
           var gaugeArc = newId + " #" + this.gaugeArc.id;
           var gaugeNeedle = newId + " #" + this.gaugeNeedle.id;
+          var gaugeArcBackground = newId + " #" + this.gaugeArcBackground.id;
+
+
           // give elements a unique id
           $(gaugeArc).attr("id", this.id + "_" + this.gaugeArc.id);
           $(gaugeNeedle).attr("id", this.id + "_" + this.gaugeNeedle.id);
+          $(gaugeArcBackground).attr("id", this.id + "_" + this.gaugeArcBackground.id);
 
+          // Attach variable to existing SVG and select SVG elements
           var s = new Snap(newId);
           var arc = Snap.select("#" + this.gaugeArc.id);
           var needle = Snap.select("#" + this.gaugeNeedle.id);
+          var arcBG = Snap.select(" #" + this.gaugeArcBackground.id);
 
-          needle.select("polygon:nth-child(1)").attr({
-            fill: color
-          });
-          needle.select("polygon:nth-child(2)").attr({
-            //fill: this.ColorPrimary
-            //opacity: 0.4
-          });
-          needle.select("circle").attr({
-            fill: color
-          });
+          // Color customisations configured within the Widget
+          this._customColor(arcBG, arc, needle);
 
+          // Calculate the arc rotation in % between 0 - 100
           var arcLength = arc.getTotalLength();
           var arcString = arc.attr("d");
-
           var archValue = (arcLength / 100) * value;
           var rotationValue = (270 / 100) * value;
           arc.attr({ d: ""});
 
+          // Animate rotatable elements
           needle.animate({
             transform: "r" + rotationValue + ", 160, 160"
           }, 1000);
 
-          Snap.animate(0,archValue, function( val ) {
-            var arcSubPath = Snap.path.getSubpath(arcString,0,val) ;
-            arc.attr({ d: arcSubPath });
+          Snap.animate(0, archValue, function (val) {
+            var arcSubPath = Snap.path.getSubpath(arcString, 0, val);
+            arc.attr({
+                d: arcSubPath
+            });
           }, 1000);
 
+          var f = s.filter(Snap.filter.blur(5, 10)),
+          //var f = svg.paper.filter(Snap.filter.hueRotate(45));
+          c = arc.attr({
+            filter: f
+          });
+
+          // Increase this value to make every SVG use unique ID's
           this.counter.innerHTML = ++this._i;
         },
 

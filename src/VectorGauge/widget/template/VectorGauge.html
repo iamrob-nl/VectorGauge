@@ -1,8 +1,8 @@
 <div>
   <span data-dojo-attach-point="counter" style="display: none;">0</span>
-  <svg version="1.1" baseProfile="full" width="320" height="270" xmlns="http://www.w3.org/2000/svg" id="svg-gauge" data-dojo-attach-point="svgGauge">
+  <svg version="1.1" id="svg-gauge" baseProfile="full" width="320" height="270" data-dojo-attach-point="svgGauge" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px">
     <g id="gauge-face">
-      <path d="M48 266 A 155 155, 0, 1, 1, 273, 266" fill="none" stroke="#d9e6ef" stroke-width="10" />
+      <path d="M48 266 A 155 155, 0, 1, 1, 273, 266" fill="none" stroke="#d9e6ef" stroke-width="10" id="gauge-arc-bg" data-dojo-attach-point="gaugeArcBackground" />
       <path d="M48 266 A 155 155, 0, 1, 1, 273, 266" fill="none" stroke="#005399" stroke-width="10"  id="gauge-arc" data-dojo-attach-point="gaugeArc" />
       <ellipse cx="160" cy="175" rx="15" ry="4" style="fill: #e0e0e0" />
       <text x="63" y="260" fill="#01549a">0</text>
@@ -17,8 +17,12 @@
       <text x="217" y="260" fill="#01549a">100</text>
     </g>
     <g data-dojo-attach-point="gaugeNeedle" id="gauge-needle">
-      <polygon points="80 240, 160 160, 165 165" style="fill: #005598; stroke: #223c75" />
-      <polygon points="80 240, 155 155, 160 160" style="fill: #223c75" />
+      <!--<polygon points="80 240, 160 160, 165 165" style="fill: #005598; stroke: #223c75" />
+      <polygon points="80 240, 155 155, 160 160" style="fill: #223c75" />-->
+
+      <polygon points="80, 240 155, 155 165, 165" style="fill: #005598; stroke: #223c75" />
+      <polygon points="80, 240 155, 155 160, 160" style="fill: #223c75" />
+
       <circle cx="160" cy="160" r="15" style="fill: #005598; stroke: #223c75" />
     </g>
   </svg>
