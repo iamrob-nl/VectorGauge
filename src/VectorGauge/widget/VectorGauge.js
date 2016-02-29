@@ -144,6 +144,19 @@ define([
           });
         },
 
+        _showVariable: function(value, newId) {
+          if(this.showValueAttr === true){
+            // give each value txt a unique id
+            var valueTxt = newId + " #" + this.valueTxt.id;
+            $(valueTxt).attr("id", this.id + "_" + this.valueTxt.id);
+            var valueTxtLabel = Snap.select(" #" + this.valueTxt.id);
+
+            valueTxtLabel.attr({
+              text: value
+            });
+          }
+        },
+
         _drawSVG: function() {
           logger.debug(this.id + "._drawSVG");
 
@@ -156,11 +169,13 @@ define([
           var gaugeNeedle = newId + " #" + this.gaugeNeedle.id;
           var gaugeArcBackground = newId + " #" + this.gaugeArcBackground.id;
 
-
           // give elements a unique id
           $(gaugeArc).attr("id", this.id + "_" + this.gaugeArc.id);
           $(gaugeNeedle).attr("id", this.id + "_" + this.gaugeNeedle.id);
           $(gaugeArcBackground).attr("id", this.id + "_" + this.gaugeArcBackground.id);
+
+          // show the current variable in the gauge
+          this._showVariable(value, newId);
 
           // Attach variable to existing SVG and select SVG elements
           var s = new Snap(newId);

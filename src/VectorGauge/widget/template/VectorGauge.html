@@ -1,6 +1,17 @@
 <div>
   <span data-dojo-attach-point="counter" style="display: none;">0</span>
   <svg version="1.1" id="svg-gauge" baseProfile="full" width="320" height="270" data-dojo-attach-point="svgGauge" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px">
+    <defs>
+      <style>
+        .valueTxt {
+          font-family: Arial;
+          font-size: 42px;
+          fill: #4c4c4c;
+          font-weight: bold; //700;
+        }
+      </style>
+    </defs>
+
     <g id="gauge-face">
       <path d="M48 266 A 155 155, 0, 1, 1, 273, 266" fill="none" stroke="#d9e6ef" stroke-width="10" id="gauge-arc-bg" data-dojo-attach-point="gaugeArcBackground" />
       <path d="M48 266 A 155 155, 0, 1, 1, 273, 266" fill="none" stroke="#005399" stroke-width="10"  id="gauge-arc" data-dojo-attach-point="gaugeArc" />
@@ -15,6 +26,8 @@
       <text x="260" y="132" fill="#01549a">30</text>
       <text x="260" y="200" fill="#01549a">50</text>-->
       <text x="217" y="260" fill="#01549a">100</text>
+
+      <text x="136.64" y="240.62" class="valueTxt" id="value-txt" data-dojo-attach-point="valueTxt">0</text>
     </g>
     <g data-dojo-attach-point="gaugeNeedle" id="gauge-needle">
       <!--<polygon points="80 240, 160 160, 165 165" style="fill: #005598; stroke: #223c75" />
