@@ -161,9 +161,9 @@ define([
           logger.debug(this.id + "._drawSVG");
 
           // Widget configured variables
-          var value = this._contextObj ? this._contextObj.get(this.valueAttr) : "";
-          var minValue = this._contextObj ? this._contextObj.get(this.minValueAttr) : 0;
-          var maxValue = this._contextObj ? this._contextObj.get(this.maxValueAttr) : 100;
+          var value = this._contextObj ? Number(this._contextObj.get(this.valueAttr)) : 0;
+          var minValue = this._contextObj ? Number(this._contextObj.get(this.minValueAttr)) : 0;
+          var maxValue = this._contextObj ? Number(this._contextObj.get(this.maxValueAttr)) : 100;
 
           // Variable SVG elements
           var newId = "#" + this.id;
@@ -217,6 +217,10 @@ define([
 
           var archValue = (arcLength / maxValue) * value;
           var rotationValue = (270 / maxValue) * value;
+
+// console.log("maxValue = " + maxValue);
+//           console.log("rotationValue = " + rotationValue);
+//           console.log("value = " + value);
 
           // Animate rotatable elements
           needle.animate({
