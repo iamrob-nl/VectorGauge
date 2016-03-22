@@ -162,12 +162,31 @@ define([
 
           // Widget configured variables
           var value = this._contextObj ? this._contextObj.get(this.valueAttr) : "";
+          var minValue = this._contextObj ? this._contextObj.get(this.minValueAttr) : 0;
+          var maxValue = this._contextObj ? this._contextObj.get(this.maxValueAttr) : 100;
 
           // Variable SVG elements
           var newId = "#" + this.id;
           var gaugeArc = newId + " #" + this.gaugeArc.id;
           var gaugeNeedle = newId + " #" + this.gaugeNeedle.id;
           var gaugeArcBackground = newId + " #" + this.gaugeArcBackground.id;
+
+          // display minimum and maximum values
+          var minValueTxt = newId + " #" + this.minValueTxt.id;
+          $(minValueTxt).attr("id", this.id + "_" + this.minValueTxt.id);
+          var minValueTxtLabel = Snap.select(" #" + this.minValueTxt.id);
+
+          minValueTxtLabel.attr({
+            text: minValue
+          });
+
+          var maxValueTxt = newId + " #" + this.maxValueTxt.id;
+          $(maxValueTxt).attr("id", this.id + "_" + this.maxValueTxt.id);
+          var maxValueTxtLabel = Snap.select(" #" + this.maxValueTxt.id);
+
+          maxValueTxtLabel.attr({
+            text: maxValue
+          });
 
           // give elements a unique id
           $(gaugeArc).attr("id", this.id + "_" + this.gaugeArc.id);
@@ -189,15 +208,22 @@ define([
           // Calculate the arc rotation in % between 0 - 100
           var arcLength = arc.getTotalLength();
           var arcString = arc.attr("d");
-          var archValue = (arcLength / 100) * value;
-          var rotationValue = (270 / 100) * value;
-          arc.attr({ d: ""});
+
+          if(value >= maxValue){
+            value = maxValue;
+          } else if(value <= minValue) {
+            value = minValue;
+          }
+
+          var archValue = (arcLength / maxValue) * value;
+          var rotationValue = (270 / maxValue) * value;
 
           // Animate rotatable elements
           needle.animate({
             transform: "r" + rotationValue + ", 160, 160"
           }, 1000);
 
+          arc.attr({ d: ""});
           Snap.animate(0, archValue, function (val) {
             var arcSubPath = Snap.path.getSubpath(arcString, 0, val);
             arc.attr({

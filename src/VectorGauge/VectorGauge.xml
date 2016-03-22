@@ -21,6 +21,22 @@
                 <attributeType name="Integer" />
             </attributeTypes>
         </property>
+        <property key="minValueAttr" type="attribute" required="true">
+            <caption>minimum value</caption>
+            <category>Appearance</category>
+            <description>Minimum value for the gauge.</description>
+            <attributeTypes>
+                <attributeType name="Integer" />
+            </attributeTypes>
+        </property>
+        <property key="maxValueAttr" type="attribute" required="true">
+            <caption>maximum value</caption>
+            <category>Appearance</category>
+            <description>Maximum value for the gauge.</description>
+            <attributeTypes>
+                <attributeType name="Integer" />
+            </attributeTypes>
+        </property>
         <property key="showValueAttr" type="boolean" defaultValue="true">
     			<caption>Display value</caption>
     			<category>Appearance</category>
