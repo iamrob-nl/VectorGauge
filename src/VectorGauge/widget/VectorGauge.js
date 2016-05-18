@@ -35,9 +35,9 @@ define([
     "dojo/_base/event",
 
     "VectorGauge/lib/jquery-1.11.2",
-    "VectorGauge/lib/snap.svg",
+    "VectorGauge/lib/velocity",
     "dojo/text!VectorGauge/widget/template/VectorGauge.html"
-], function(declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoArray, dojoLang, dojoText, dojoHtml, dojoEvent, _jQuery, snap, widgetTemplate) {
+], function(declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoArray, dojoLang, dojoText, dojoHtml, dojoEvent, _jQuery, velocity, widgetTemplate) {
     "use strict";
 
     var $ = _jQuery.noConflict(true);
@@ -108,52 +108,47 @@ define([
 
             logger.debug("need to redraw SVG");
             this._resetSVG();
-            // this._drawSVG();
         },
 
         // Attach events to HTML dom elements
         _setupEvents: function() {
-            //logger.debug(this.id + "._setupEvents");
+            logger.debug(this.id + "._setupEvents");
         },
 
-        _customColor: function(arcBG, arc, needle) {
+        _customColor: function(gaugeArcBackground, gaugeArc, gaugeNeedle) {
           logger.debug(this.id + "._customColor");
 
           var color = this._contextObj ? this._contextObj.get(this.ColorPrimaryAttr) : "";
 
-          arcBG.attr({
+          $(gaugeArcBackground).attr({
             stroke: color,
             opacity: 0.25
           });
 
-          arc.attr({
+          $(gaugeArc).attr({
             stroke: color
           });
 
-          needle.select("polygon:nth-child(1)").attr({
+          $(gaugeNeedle + " polygon:nth-child(1)").attr({
             fill: color,
             stroke: "rgba(0, 0, 0, .5)"
           });
-          needle.select("polygon:nth-child(2)").attr({
+
+          $(gaugeNeedle + " polygon:nth-child(2)").attr({
             fill: "#000000",
             opacity: 0.15
           });
-          needle.select("circle").attr({
+
+          $(gaugeNeedle + " circle").attr({
             fill: color,
             stroke: "rgba(0, 0, 0, .5)"
           });
         },
 
-        _showVariable: function(value, newId) {
+        _showVariable: function(value, widgetId) {
           if(this.showValueAttr === true){
-            // give each value txt a unique id
-            var valueTxt = newId + " #" + this.valueTxt.id;
-            $(valueTxt).attr("id", this.id + "_" + this.valueTxt.id);
-            var valueTxtLabel = Snap.select(" #" + this.valueTxt.id);
-
-            valueTxtLabel.attr({
-              text: value
-            });
+            var valueTxt = widgetId + " #" + this.valueTxt.id;
+            $(valueTxt).text(value);
           }
         },
 
@@ -166,48 +161,17 @@ define([
           var maxValue = this._contextObj ? Number(this._contextObj.get(this.maxValueAttr)) : 100;
 
           // Variable SVG elements
-          var newId = "#" + this.id;
-          var gaugeArc = newId + " #" + this.gaugeArc.id;
-          var gaugeNeedle = newId + " #" + this.gaugeNeedle.id;
-          var gaugeArcBackground = newId + " #" + this.gaugeArcBackground.id;
+          var widgetId = "#" + this.id;
+          var gaugeArc = widgetId + " #" + this.gaugeArc.id;
+          var gaugeNeedle = widgetId + " #" + this.gaugeNeedle.id;
+          var gaugeArcBackground = widgetId + " #" + this.gaugeArcBackground.id;
 
           // display minimum and maximum values
-          var minValueTxt = newId + " #" + this.minValueTxt.id;
-          $(minValueTxt).attr("id", this.id + "_" + this.minValueTxt.id);
-          var minValueTxtLabel = Snap.select(" #" + this.minValueTxt.id);
+          var minValueTxt = widgetId + " #" + this.minValueTxt.id;
+          $(minValueTxt).text(minValue);
 
-          minValueTxtLabel.attr({
-            text: minValue
-          });
-
-          var maxValueTxt = newId + " #" + this.maxValueTxt.id;
-          $(maxValueTxt).attr("id", this.id + "_" + this.maxValueTxt.id);
-          var maxValueTxtLabel = Snap.select(" #" + this.maxValueTxt.id);
-
-          maxValueTxtLabel.attr({
-            text: maxValue
-          });
-
-          // give elements a unique id
-          $(gaugeArc).attr("id", this.id + "_" + this.gaugeArc.id);
-          $(gaugeNeedle).attr("id", this.id + "_" + this.gaugeNeedle.id);
-          $(gaugeArcBackground).attr("id", this.id + "_" + this.gaugeArcBackground.id);
-
-          // show the current variable in the gauge
-          this._showVariable(value, newId);
-
-          // Attach variable to existing SVG and select SVG elements
-          var s = new Snap(newId);
-          var arc = Snap.select("#" + this.gaugeArc.id);
-          var needle = Snap.select("#" + this.gaugeNeedle.id);
-          var arcBG = Snap.select(" #" + this.gaugeArcBackground.id);
-
-          // Color customisations configured within the Widget
-          this._customColor(arcBG, arc, needle);
-
-          // Calculate the arc rotation in % between 0 - 100
-          var arcLength = arc.getTotalLength();
-          var arcString = arc.attr("d");
+          var maxValueTxt = widgetId + " #" + this.maxValueTxt.id;
+          $(maxValueTxt).text(maxValue);
 
           if(value >= maxValue){
             value = maxValue;
@@ -215,25 +179,31 @@ define([
             value = minValue;
           }
 
-          var archValue = (arcLength / maxValue) * value;
+          // show the current variable in the gauge
+          this._showVariable(value, widgetId);
+
+          // Color customisations configured within the Widget
+          this._customColor(gaugeArcBackground, gaugeArc, gaugeNeedle);
+
+          // Calculate the arc rotation in % between 0 - 100
+          var arcLength = $(widgetId + " #" + this.gaugeArc.id).get(0).getTotalLength();
+          var arcString = $(widgetId + " #" + this.gaugeArc.id).attr("d");
+          var archValue = arcLength - ((arcLength / maxValue) * value);
           var rotationValue = (270 / maxValue) * value;
 
-// console.log("maxValue = " + maxValue);
-//           console.log("rotationValue = " + rotationValue);
-//           console.log("value = " + value);
+          // animate the needle
+          $(gaugeNeedle).velocity({
+            rotateZ: rotationValue
+          }, { duration: 1800, delay: 400 });
 
-          // Animate rotatable elements
-          needle.animate({
-            transform: "r" + rotationValue + ", 160, 160"
-          }, 1000);
-
-          arc.attr({ d: ""});
-          Snap.animate(0, archValue, function (val) {
-            var arcSubPath = Snap.path.getSubpath(arcString, 0, val);
-            arc.attr({
-                d: arcSubPath
-            });
-          }, 1000);
+          $(gaugeArc)
+            .velocity({
+              "stroke-dashoffset": arcLength,
+              "stroke-dasharray": arcLength
+            }, 0)
+            .velocity({
+              "stroke-dashoffset": archValue
+            }, {duration: 1800, delay: 400});
 
           // Increase this value to make every SVG use unique ID's
           this.counter.innerHTML = ++this._i;
@@ -251,8 +221,7 @@ define([
             if (this._contextObj !== null) {
               this._drawSVG();
             } else {
-                // Hide widget dom node.
-                dojoStyle.set(this.domNode, "display", "none");
+                dojoStyle.set(this.domNode, "display", "none"); // Hide widget dom node.
             }
 
             // Important to clear all validations!
@@ -313,7 +282,7 @@ define([
             if (this._handles) {
                 dojoArray.forEach(this._handles, function (handle, i) {
                     mx.data.unsubscribe(handle);
-                });
+                }); 
                 this._handles = [];
             }
 

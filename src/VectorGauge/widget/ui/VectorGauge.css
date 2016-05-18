@@ -1,5 +1,5 @@
 .widgetname {
-    
+
 }
 
 .widgetname-message {
@@ -14,4 +14,10 @@
 .widgetname-infoTextNode {
     padding: 0.8em 1em;
     margin-top: 10px;
+}
+
+g {
+  -webkit-transform-origin: 160px 160px;
+      -ms-transform-origin: 160px 160px;
+          transform-origin: 160px 160px;
 }
