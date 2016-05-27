@@ -1,6 +1,6 @@
 {
   "name": "VectorGauge",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Show a gauge meter in Mendix",
   "license": "Apache 2",
   "author": "Rob Duits",
