@@ -35,9 +35,10 @@ define([
     "dojo/_base/event",
 
     "VectorGauge/lib/jquery-1.11.2",
-    "VectorGauge/lib/velocity",
-    "dojo/text!VectorGauge/widget/template/VectorGauge.html"
-], function(declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoArray, dojoLang, dojoText, dojoHtml, dojoEvent, _jQuery, velocity, widgetTemplate) {
+    "dojo/text!VectorGauge/widget/template/VectorGauge.html",
+
+    "VectorGauge/lib/velocity"
+], function(declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoArray, dojoLang, dojoText, dojoHtml, dojoEvent, _jQuery, widgetTemplate) {
     "use strict";
 
     var $ = _jQuery.noConflict(true);
@@ -282,7 +283,7 @@ define([
             if (this._handles) {
                 dojoArray.forEach(this._handles, function (handle, i) {
                     mx.data.unsubscribe(handle);
-                }); 
+                });
                 this._handles = [];
             }
 
