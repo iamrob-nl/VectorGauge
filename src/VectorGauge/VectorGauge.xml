@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <widget id="VectorGauge.widget.VectorGauge" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
     <name>VectorGauge</name>
-    <description>The description of this widget.</description>
+    <description>A gauge showing a value between a minimum and maximum.</description>
     <icon>iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQ1JREFUeNpiYKAQMGKIBM9UAJIJQGwPxAJQ0Q9AfBCIFzCsTX+A3YDgmSDF9UBsAMQLgXgDUPEHJLkAII4H4gtA3AiTY0RSsB+scW36BLxuDp5ZADXIEWQIE1R4PhBPJKgZBCBqJgJxP8QFwTMdgHQ+UCKQpNALnrkeZBATWDPIT6SDRoje4JnnyY5DoF4maBRhBTIO1QkgjMcIeCBiACWbUoGfrOzzf7BxxuNzBBMuzaBo5f3+ubA32aKQkAEC0HSADEBRNPHeke4J8eEuF3D4H6RHAGTARmgqg9kO07yAQBCCwmYjI9QkUEwYKr28AzYVqPkCgdBXgKZcQ5iAAxA3kBB9DUAcwEANABBgAEVzUtlO5PvAAAAAAElFTkSuQmCC</icon>
 
     <properties>
@@ -50,3 +50,4 @@
         </property>
     </properties>
 </widget>
+
